@@ -1,17 +1,10 @@
-/**
- * 🎮 OTZIV BOT MAXFIY PULTI (24/7 Google Apps Script versiyasi)
- * 
- * Ushbu kod Google bulutida (script.google.com) umrbod va mutlaqo bepul ishlaydi.
- * Noutbuk o'chsa ham, hech qanday server bo'lmasa ham 24/7 xizmat ko'rsatadi.
- */
-
 var PULT_TOKEN = "8759841029:AAH0swsWatnCEbY-8zYbpCuNejIVEElTEtk";
 var TARGET_TOKEN = "8353295893:AAHN_HNz2ebCDpw-B-hgFVBNYfRTlEzXOB4";
 var ADMIN_IDS = [8297834028, 641941356];
 var KILLSWITCH_URL = "https://example.com/bot_disabled";
 
 function doGet(e) {
-  return ContentService.createTextOutput("🎮 Otziv Bot Maxfiy Pulti faol ishlab turibdi (Google Cloud)!");
+  return ContentService.createTextOutput("🎮 Otziv Bot Maxfiy Pulti faol (Google Cloud)!");
 }
 
 function doPost(e) {
@@ -22,7 +15,6 @@ function doPost(e) {
     
     var update = JSON.parse(e.postData.contents);
     
-    // Callback query (Inline buttons: Yoqish / O'chirish / Yangilash)
     if (update.callback_query) {
       var cq = update.callback_query;
       var fromId = cq.from.id;
@@ -47,7 +39,6 @@ function doPost(e) {
       return ContentService.createTextOutput("OK");
     }
     
-    // Oddiy xabarlar (/start, tugmalar)
     if (update.message) {
       var msg = update.message;
       var userId = msg.from ? msg.from.id : null;
@@ -62,10 +53,10 @@ function doPost(e) {
         sendStatusMessage(chatId);
       } else if (text === "🟢 Botni Yoqish") {
         turnOnTarget();
-        sendMessage(chatId, "🟢 <b>Otziv bot muvaffaqiyatli yoqildi!</b>\nEndi bot barcha foydalanuvchilar uchun ishlamoqda.");
+        sendMessage(chatId, "🟢 <b>Otziv bot yoqildi!</b>\nBarcha foydalanuvchilar uchun ishlamoqda.");
       } else if (text === "🔴 Botni O'chirish") {
         turnOffTarget();
-        sendMessage(chatId, "🔴 <b>Otziv bot butunlay o'chirildi (to'xtatildi)!</b>\nHozir bot hech kimga javob bermaydi.");
+        sendMessage(chatId, "🔴 <b>Otziv bot to'xtatildi!</b>\nHozir bot hech kimga javob bermaydi.");
       } else {
         sendStatusMessage(chatId);
       }
@@ -101,9 +92,12 @@ function sendStatusMessage(chatId) {
   var status = getTargetStatus();
   var now = Utilities.formatDate(new Date(), "Asia/Tashkent", "HH:mm:ss");
   
-  var text = (status === "ON")
-    ? "🎮 <b>OTZIV BOT MAXFIY PUL TI</b>\n\n🤖 <b>Boshqarilayotgan bot:</b> @otzivhabib_bot\n⚡ <b>Holati:</b> 🟢 <b>YONIQ (Faol)</b>\n✅ <i>Bot barcha foydalanuvchilar uchun ishlab turibdi.</i>\n\n🕒 <i>Tekshirildi: " + now + " (Google Cloud 24/7)</i>"
-    : "🎮 <b>OTZIV BOT MAXFIY PUL TI</b>\n\n🤖 <b>Boshqarilayotgan bot:</b> @otzivhabib_bot\n⚡ <b>Holati:</b> 🔴 <b>O'CHIQ (To'xtatilgan)</b>\n⚠️ <i>Bot hech kimga javob bermaydi, butunlay o'chirilgan!</i>\n\n🕒 <i>Tekshirildi: " + now + " (Google Cloud 24/7)</i>";
+  var text = "";
+  if (status === "ON") {
+    text = "🎮 <b>OTZIV BOT MAXFIY PULTI</b>\n\n🤖 <b>Boshqarilayotgan bot:</b> @otzivhabib_bot\n⚡ <b>Holati:</b> 🟢 <b>YONIQ (Faol)</b>\n✅ <i>Bot hamma uchun ishlab turibdi.</i>\n\n🕒 <i>" + now + " (Google Cloud 24/7)</i>";
+  } else {
+    text = "🎮 <b>OTZIV BOT MAXFIY PULTI</b>\n\n🤖 <b>Boshqarilayotgan bot:</b> @otzivhabib_bot\n⚡ <b>Holati:</b> 🔴 <b>O'CHIQ (To'xtatilgan)</b>\n⚠️ <i>Bot to'xtatilgan!</i>\n\n🕒 <i>" + now + " (Google Cloud 24/7)</i>";
+  }
     
   var keyboard = {
     keyboard: [
@@ -128,9 +122,12 @@ function updateMessage(chatId, messageId) {
   var status = getTargetStatus();
   var now = Utilities.formatDate(new Date(), "Asia/Tashkent", "HH:mm:ss");
   
-  var text = (status === "ON")
-    ? "🎮 <b>OTZIV BOT MAXFIY PUL TI</b>\n\n🤖 <b>Boshqarilayotgan bot:</b> @otzivhabib_bot\n⚡ <b>Holati:</b> 🟢 <b>YONIQ (Faol)</b>\n✅ <i>Bot barcha foydalanuvchilar uchun ishlab turibdi.</i>\n\n🕒 <i>Yangilandi: " + now + "</i>"
-    : "🎮 <b>OTZIV BOT MAXFIY PUL TI</b>\n\n🤖 <b>Boshqarilayotgan bot:</b> @otzivhabib_bot\n⚡ <b>Holati:</b> 🔴 <b>O'CHIQ (To'xtatilgan)</b>\n⚠️ <i>Bot hech kimga javob bermaydi, butunlay o'chirilgan!</i>\n\n🕒 <i>Yangilandi: " + now + "</i>";
+  var text = "";
+  if (status === "ON") {
+    text = "🎮 <b>OTZIV BOT MAXFIY PULTI</b>\n\n🤖 <b>Boshqarilayotgan bot:</b> @otzivhabib_bot\n⚡ <b>Holati:</b> 🟢 <b>YONIQ (Faol)</b>\n✅ <i>Bot hamma uchun ishlab turibdi.</i>\n\n🕒 <i>" + now + "</i>";
+  } else {
+    text = "🎮 <b>OTZIV BOT MAXFIY PULTI</b>\n\n🤖 <b>Boshqarilayotgan bot:</b> @otzivhabib_bot\n⚡ <b>Holati:</b> 🔴 <b>O'CHIQ (To'xtatilgan)</b>\n⚠️ <i>Bot to'xtatilgan!</i>\n\n🕒 <i>" + now + "</i>";
+  }
     
   var inline = {
     inline_keyboard: [
@@ -180,18 +177,4 @@ function answerCallback(cqId, text) {
   } catch (e) {
     Logger.log("answerCallback error: " + e);
   }
-}
-
-// ----------------------------------------------------
-// WEBHOOK O'RNATISH (Deploy qilgandan so'ng 1 marta ishga tushirasiz)
-// ----------------------------------------------------
-function setWebhook() {
-  var webAppUrl = ScriptApp.getService().getUrl();
-  var resp = UrlFetchApp.fetch("https://api.telegram.org/bot" + PULT_TOKEN + "/setWebhook?url=" + encodeURIComponent(webAppUrl));
-  Logger.log("Webhook javobi: " + resp.getContentText());
-}
-
-function checkWebhook() {
-  var resp = UrlFetchApp.fetch("https://api.telegram.org/bot" + PULT_TOKEN + "/getWebhookInfo");
-  Logger.log("Webhook holati: " + resp.getContentText());
 }
